@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Catálogo de Discos Musicais</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Catálogo de Discos Musicais</h1>
+      <p>
+        Bem-vindo ao seu catálogo de discos! Aqui você pode gerenciar
+        informações sobre discos, artistas e gêneros.
+      </p>
+    </header>
+
+    <main>
+      <!-- Resumo com Contadores -->
+      <section class="resumo">
+        <div class="contador">
+          <h2>Total de Discos</h2>
+          <p><%= totalDiscos %></p>
+        </div>
+        <div class="contador">
+          <h2>Total de Artistas</h2>
+          <p><%= totalArtistas %></p>
+        </div>
+        <div class="contador">
+          <h2>Total de Gêneros</h2>
+          <p><%= totalGeneros %></p>
+        </div>
+      </section>
+
+      <!-- Barra de Pesquisa -->
+      <section class="busca">
+        <h2>Buscar no Catálogo</h2>
+        <form action="/search" method="GET">
+          <input
+            type="text"
+            name="query"
+            placeholder="Pesquisar por disco, artista ou gênero"
+            required
+          />
+          <button type="submit">Buscar</button>
+        </form>
+      </section>
+
+      <!-- Ações Rápidas -->
+      <section class="acoes-rapidas">
+        <h2>Ações Rápidas</h2>
+        <div class="botoes">
+          <a href="/discos/new" class="btn">Novo Disco</a>
+          <a href="/artistas/new" class="btn">Novo Artista</a>
+          <a href="/generos/new" class="btn">Novo Gênero</a>
+        </div>
+      </section>
+
+      <!-- Listagem de Discos Recentes -->
+      <section class="discos-recentes">
+        <h2>Discos Recentes</h2>
+        <% if (discosRecentes.length > 0) { %>
+        <ul>
+          <% discosRecentes.forEach(disco => { %>
+          <li>
+            <img src="<%= disco.capa %>" alt="Capa de <%= disco.titulo %>" />
+            <h3><%= disco.titulo %> (<%= disco.anoLancamento %>)</h3>
+            <p>Artista: <%= disco.artista.nome %></p>
+            <a href="/discos/<%= disco.id %>" class="detalhes-link"
+              >Ver Detalhes</a
+            >
+          </li>
+          <% }) %>
+        </ul>
+        <% } else { %>
+        <p>Nenhum disco disponível.</p>
+        <% } %>
+      </section>
+    </main>
+
+    <footer>
+      <p>
+        &copy; 2024 Catálogo de Discos Musicais. Todos os direitos reservados.
+      </p>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "camaro01",
+    "database": "apidiscos",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "postgres",
+    "password": "camaro01",
+    "database": "apidiscos",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "postgres",
+    "password": "camaro01",
+    "database": "apidiscos",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  }
+}
