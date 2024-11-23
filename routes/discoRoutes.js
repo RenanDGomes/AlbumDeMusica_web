@@ -4,7 +4,9 @@ const discoController = require("../controllers/discoController");
 
 router.post("/", discoController.createDisco);
 router.get("/", discoController.getAllDiscos);
-router.delete('/:id', discoController.deleteDisco);
-router.get('/:id', discoController.getDiscoById)
+router.delete("/:id", discoController.deleteDisco);
+router.get("/:id", discoController.getDiscoById);
+router.put("/:id", discoController.editarDisco);
 
 module.exports = router;
+

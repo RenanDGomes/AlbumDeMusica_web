@@ -43,7 +43,7 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       capa: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: false,
       },
     });

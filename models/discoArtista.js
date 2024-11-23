@@ -9,8 +9,8 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         allowNull: false,
         references: {
-          model: 'Disco',  
-          key: 'id',
+          model: "Disco",
+          key: "id",
         },
       },
       artistaId: {
@@ -18,14 +18,14 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         allowNull: false,
         references: {
-          model: 'Artista', 
-          key: 'id',
+          model: "Artista",
+          key: "id",
         },
       },
     },
     {
       tableName: "discoartista",
-      timestamps: false,  
+      timestamps: false,
     }
   );
 

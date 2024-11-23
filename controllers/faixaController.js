@@ -6,35 +6,33 @@ exports.createFaixa = async (req, res) => {
 
     const disco = await Disco.findByPk(discoId);
     if (!disco) {
-      return res.status(404).json({ message: 'Disco não encontrado' });
+      return res.status(404).render("error", { message: "Disco não encontrado" });
     }
 
-    const faixa = await Faixa.create({
-      nome,
-      duracao,
-      discoId,  
-    });
+    await Faixa.create({ nome, duracao, discoId });
 
-    res.status(201).json(faixa);
+    res.redirect(`/discos/${discoId}`);
   } catch (error) {
-    res.status(500).json({ message: 'Erro ao criar faixa', error });
+    res.status(500).render("error", { message: "Erro ao criar faixa", error });
   }
 };
 
-exports.deleteFaixa = async (req,res) => {
-    try {
-        const { id } = req.params;
-        const faixa = await Faixa.findByPk(id);
+exports.deleteFaixa = async (req, res) => {
+  try {
+    const { id } = req.params;
 
-        if (!faixa) {
-            return res.status(404).json({ message: "Faixa não encontrada"});
-        }
-        await faixa.destroy();
-        return res.status(200).json({ message: `Faixa ${faixa.nome}deletada`})
-    } catch (error) {
-        res.status(500).json({ message: "Erro ao deletar faixa", error})
+    const faixa = await Faixa.findByPk(id);
+    if (!faixa) {
+      return res.status(404).render("error", { message: "Faixa não encontrada" });
     }
-};
 
+    const discoId = faixa.discoId; 
+    await faixa.destroy();
+
+    res.redirect(`/discos/${discoId}`);
+  } catch (error) {
+    res.status(500).render("error", { message: "Erro ao deletar faixa", error });
+  }
+};
 
 

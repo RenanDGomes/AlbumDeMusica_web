@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gerenciamento de Discos</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header>
+    <h1>Gerenciamento de Discos</h1>
+  </header>
+
+  <main>
+    <% if (typeof message !== 'undefined') { %>
+      <div class="alert"><%= message %></div>
+    <% } %>
+
+    <section>
+      <h2>Discos Cadastrados</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Título</th>
+            <th>Ano</th>
+            <th>Artistas</th>
+            <th>Gêneros</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (discos.length > 0) { %>
+            <% discos.forEach((disco, index) => { %>
+              <tr>
+                <td><%= index + 1 %></td>
+                <td><%= disco.titulo %></td>
+                <td><%= disco.anoLancamento %></td>
+                <td>
+                  <% disco.artistas.forEach((artista, idx) => { %>
+                    <%= artista.nome %><%= idx < disco.artistas.length - 1 ? ', ' : '' %>
+                  <% }); %>
+                </td>
+                <td>
+                  <% disco.generos.forEach((genero, idx) => { %>
+                    <%= genero.nome %><%= idx < disco.generos.length - 1 ? ', ' : '' %>
+                  <% }); %>
+                </td>
+                <td>
+                  <a href="/discos/<%= disco.id %>">Detalhes</a>
+
+                  <button onclick="editarDisco('<%= disco.id %>', '<%= disco.titulo %>', '<%= disco.anoLancamento %>', '<%= disco.capa %>')">Editar</button>
+
+                  <form action="/discos/<%= disco.id %>?_method=DELETE" method="POST" style="display:inline;">
+                    <button type="submit">Excluir</button>
+                  </form>
+                </td>
+              </tr>
+            <% }); %>
+          <% } else { %>
+            <tr>
+              <td colspan="6">Nenhum disco cadastrado.</td>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2 id="form-title">Adicionar Disco</h2>
+      <form action="/discos" method="POST" id="disco-form">
+        <input type="hidden" name="_method" value="POST"> 
+        <input type="hidden" name="id" id="disco-id">
+        <div>
+          <label for="titulo">Título do Disco:</label>
+          <input type="text" name="titulo" id="titulo" required>
+        </div>
+        <div>
+          <label for="anoLancamento">Ano de Lançamento:</label>
+          <input type="number" name="anoLancamento" id="anoLancamento" required>
+        </div>
+        <div>
+          <label for="idArtista">Artista:</label>
+          <select name="idArtista" id="idArtista" required>
+            <% artistas.forEach((artista) => { %>
+              <option value="<%= artista.id %>"><%= artista.nome %></option>
+            <% }); %>
+          </select>
+        </div>
+        <div>
+          <label for="idGenero">Gêneros:</label>
+          <select name="idGenero" id="idGenero" multiple required>
+            <% generos.forEach((genero) => { %>
+              <option value="<%= genero.id %>"><%= genero.nome %></option>
+            <% }); %>
+          </select>
+        </div>
+        <div>
+          <label for="capa">Capa (URL):</label>
+          <input type="url" name="capa" id="capa">
+        </div>
+        <button type="submit">Salvar</button>
+        <a href="/artistas">Ir para Artistas</a>
+
+      </form>
+    </section>
+  </main>
+
+  <script>
+    function editarDisco(id, titulo, anoLancamento, capa) {
+      document.getElementById('form-title').innerText = "Editar Disco";
+      document.getElementById('disco-id').value = id;
+      document.getElementById('titulo').value = titulo;
+      document.getElementById('anoLancamento').value = anoLancamento;
+      document.getElementById('capa').value = capa;
+
+      const form = document.getElementById('disco-form');
+      form.action = `/discos/${id}`;
+      form.querySelector('input[name="_method"]').value = "PUT";
+    }
+  </script>
+</body>
+</html>

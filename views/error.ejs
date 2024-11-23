@@ -1,16 +1,14 @@
-<!-- views/error.ejs -->
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Erro</title>
-  <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-  <div class="error-container">
-    <h1>Ocorreu um erro!</h1>
-    <p><%= message %></p>
-  </div>
+  <h1><%= message %></h1>
+  <p><%= error ? error.message : "Ocorreu um erro inesperado." %></p>
+  <a href="/discos">Ir para Discos</a>
+
 </body>
 </html>

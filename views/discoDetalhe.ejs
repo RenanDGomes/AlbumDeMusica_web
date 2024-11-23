@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalhes do Disco</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header>
+    <h1>Detalhes do Disco</h1>
+  </header>
+
+  <main>
+    <section>
+      <h2><%= disco.titulo %></h2>
+      <p><strong>Ano de Lançamento:</strong> <%= disco.anoLancamento %></p>
+      <p><strong>Artistas:</strong>
+        <% disco.artistas.forEach((artista, idx) => { %>
+          <%= artista.nome %><%= idx < disco.artistas.length - 1 ? ', ' : '' %>
+        <% }); %>
+      </p>
+      <p><strong>Gêneros:</strong>
+        <% disco.generos.forEach((genero, idx) => { %>
+          <%= genero.nome %><%= idx < disco.generos.length - 1 ? ', ' : '' %>
+        <% }); %>
+      </p>
+      <% if (disco.capa) { %>
+        <img src="<%= disco.capa %>" alt="Capa do Disco" style="width: 200px; height: auto;">
+      <% } else { %>
+        <p><em>Sem capa disponível</em></p>
+      <% } %>
+    </section>
+
+    <section>
+      <h3>Faixas</h3>
+      <% if (disco.faixas.length > 0) { %>
+        <ol>
+          <% disco.faixas.forEach((faixa) => { %>
+            <li>
+              <strong><%= faixa.nome %></strong> - <%= faixa.duracao %> minutos
+            </li>
+          <% }); %>
+        </ol>
+      <% } else { %>
+        <p>Sem faixas cadastradas.</p>
+      <% } %>
+    </section>
+
+    <section>
+      <h3>Cadastrar Faixa</h3>
+      <form action="/faixas" method="POST">
+        <input type="hidden" name="discoId" value="<%= disco.id %>">
+        <div>
+          <label for="nome">Nome da Faixa:</label>
+          <input type="text" name="nome" id="nome" required>
+        </div>
+        <div>
+          <label for="duracao">Duração (minutos):</label>
+          <input type="number" name="duracao" id="duracao" step="0.01" required>
+        </div>
+        <button type="submit">Salvar</button>
+        <a href="/discos">Ir para Discos</a>
+      </form>
+    </section>
+
+    <a href="/discos">Voltar para lista de discos</a>
+  </main>
+</body>
+</html>

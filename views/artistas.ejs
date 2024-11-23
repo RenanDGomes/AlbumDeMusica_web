@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gerenciamento de Artistas</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Gerenciamento de Artistas</h1>
+    </header>
+
+    <main>
+      <% if (typeof message !== 'undefined') { %>
+      <div class="alert"><%= message %></div>
+      <% } %>
+
+      <section>
+        <h2>Artistas Cadastrados</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Nome</th>
+              <th>Gêneros</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (artistas.length > 0) { %>
+              <% artistas.forEach((artista, index) => { %>
+              <tr>
+                <td><%= index + 1 %></td>
+                <td><%= artista.nome %></td>
+                <td>
+                  <% artista.generos.forEach((genero, idx) => { %>
+                    <%= genero.nome %><%= idx < artista.generos.length - 1 ? ', ' : '' %>
+                  <% }); %>
+                </td>
+                <td>
+                    <button
+                    class="edit-button"
+                    data-id="<%= artista.id %>"
+                    data-nome="<%= artista.nome.replace(/'/g, '\\\'') %>"
+                    data-generos='<%- JSON.stringify(artista.generos.map(g => g.nome)) %>'
+                  >
+                    Editar
+                  </button>
+
+                  <form
+                    action="/artistas/<%= artista.id %>?_method=DELETE"
+                    method="POST"
+                    style="display: inline">
+                    <button type="submit" class="delete-button">Excluir</button>
+                  </form>
+                </td>
+              </tr>
+              <% }); %>
+            <% } else { %>
+            <tr>
+              <td colspan="4">Nenhum artista cadastrado.</td>
+            </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </section>
+
+      <section>
+        <h2 id="form-title">Adicionar Artista</h2>
+        <form action="/artistas" method="POST" id="artista-form">
+          <input type="hidden" name="_method" value="POST" />
+          <input type="hidden" name="id" id="artista-id" />
+          <div>
+            <label for="nome">Nome do Artista:</label>
+            <input type="text" name="nome" id="nome" required />
+          </div>
+          <div>
+            <label for="generoMusical">Gênero Musical:</label>
+            <input
+              type="text"
+              name="generoMusical"
+              id="generoMusical"
+              placeholder="Digite um ou mais gêneros separados por vírgula"
+              required
+            />
+          </div>
+          <button type="submit">Salvar</button>
+          <a href="/discos">Ir para Discos</a>
+        </form>
+      </section>
+    </main>
+
+    <script>
+      function editarArtista(id, nome, generos) {
+        try {
+          if (!Array.isArray(generos)) {
+            console.warn("Os gêneros fornecidos não são um array. Inicializando como vazio.");
+            generos = [];
+          }
+
+          document.getElementById("form-title").innerText = "Editar Artista";
+
+          document.getElementById("artista-id").value = id;
+          document.getElementById("nome").value = nome;
+          document.getElementById("generoMusical").value = generos.join(", ");
+
+          const form = document.getElementById("artista-form");
+          form.action = `/artistas/${id}`;
+          form.querySelector('input[name="_method"]').value = "PUT"; 
+        } catch (error) {
+          console.error("Erro ao preparar o formulário para edição:", error);
+        }
+      }
+    </script>
+  </body>
+</html>

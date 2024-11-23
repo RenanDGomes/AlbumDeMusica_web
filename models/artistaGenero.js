@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
       artistaId: {
         type: DataTypes.INTEGER,
         references: {
-          model: "artista", 
+          model: "artista",
           key: "id",
         },
         onDelete: "CASCADE",
@@ -15,15 +15,15 @@ module.exports = (sequelize, DataTypes) => {
       generoId: {
         type: DataTypes.INTEGER,
         references: {
-          model: "genero", 
+          model: "genero",
           key: "id",
         },
         onDelete: "CASCADE",
       },
     },
     {
-      tableName: "artistagenero", 
-      timestamps: false, 
+      tableName: "artistagenero",
+      timestamps: false,
     }
   );
 
